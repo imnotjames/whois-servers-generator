@@ -18,7 +18,7 @@ function parseTLDList(text) {
   return [... new Set(tlds) ];
 }
 
-async function fetchRecord(tld) {
+export async function fetchRecord(tld) {
   let result = await WHOIS_LOOKUP(tld, { server: IANA_WHOIS });
 
   let record = new Map(
