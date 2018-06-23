@@ -22,22 +22,22 @@ import { default as merge } from './merger';
 
 export async function fetchRecord(tld) {
   return merge(
-    [
-      await fetchRecordIANA(tld),
-      await fetchRecordICANN(tld),
-      await fetchRecordMarcoDitri(tld),
-      await fetchRecordGTLD(tld)
-    ]
+    await Promise.all([
+      fetchRecordIANA(tld),
+      fetchRecordICANN(tld),
+      fetchRecordMarcoDitri(tld),
+      fetchRecordGTLD(tld)
+    ])
   );
 }
 
 export async function fetchList() {
   return merge(
-    [
-      await fetchListIANA(),
-      await fetchListICANN(),
-      await fetchListMarcoDitri(),
-      await fetchListGTLD()
-    ]
+    await Promise.all([
+      fetchListIANA(),
+      fetchListICANN(),
+      fetchListMarcoDitri(),
+      fetchListGTLD()
+    ])
   );
 }
