@@ -31,11 +31,11 @@ export async function fetchRecord(tld) {
       .map(record => [ record[1], record[2] ])
   );
 
-  if (!record.has(tld)) {
+  if (!record.has('whois')) {
     return new Map();
   }
 
-  return new Map([ [ tld, [ record.get(tld) ] ] ]);
+  return new Map([ [ tld, [ record.get('whois') ] ] ]);
 }
 
 export async function fetchList() {
