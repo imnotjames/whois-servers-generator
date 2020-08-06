@@ -1,0 +1,59 @@
+version: 2.1
+
+orbs:
+  node: circleci/node@2.0.3
+
+jobs:
+  build:
+    executor:
+      name: node/default
+    steps:
+      - checkout
+      - node/install-packages
+      - run:
+          name: Build Javascript
+          command: npm run build
+      - run:
+          name: Buils Whois Servers List
+          command: |
+            mkdir artifacts/
+            node build/index.js fetch --format=json > artifacts/servers.json
+      - persist_to_workspace:
+          root: .
+          paths:
+            - artifacts
+      - store_artifacts:
+          path: artifacts
+
+  publish:
+    executor: linux
+    steps:
+      - attach_workspace:
+          at: .
+      - run:
+          name: Set up Git
+          command: |
+            declare -r SSH_FILE="$(mktemp -u $HOME/.ssh/XXXXX)"
+            echo -ne "$GIT_PRIVATE_KEY" > $SSH_FILE
+            chmod 600 "$SSH_FILE"
+            echo -en "Host alternate-github\n  User git\n  HostName github.com\n  IdentityFile $SSH_FILE" >> $HOME/.ssh/config
+            git config --global user.email "ci@circleci.com"
+            git config --global user.name "CircleCI"
+      - run:
+          name: Clone Target Repository
+          command: git clone alternate-github:imnotjames/whois-servers.git ./whois-servers
+      - run:
+          name: Place New Servers
+          command: |
+            cp ./artifacts/servers.json ./whois-servers/
+      - run:
+          name: Publish to Target Repository
+          command: |
+            cd ./whois-servers/
+            if [ -n "$(git status --porcelain)" ]; then
+              git add servers.json
+              git commit -m "$(printf 'CI: Updating Server List\n\n%s' $CIRCLE_BUILD_URL)"
+              npm version patch
+              git push
+              git push --tags
+            fi
