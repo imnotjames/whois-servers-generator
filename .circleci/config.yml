@@ -11,10 +11,10 @@ jobs:
       - checkout
       - node/install-packages
       - run:
-          name: Buils Whois Servers List
+          name: Build Whois Servers List
           command: |
             mkdir artifacts/
-            npm run start fetch --format=json > artifacts/servers.json
+            node src/cli.js fetch --format=json > artifacts/servers.json
       - persist_to_workspace:
           root: .
           paths:
