@@ -64,7 +64,9 @@ workflows:
   commit:
     jobs:
       - build
-      - publish
+      - publish:
+          requires:
+            - build
   nightly:
     triggers:
       - schedule:
@@ -75,4 +77,6 @@ workflows:
                 - master
     jobs:
       - build
-      - publish
+      - publish:
+          requires:
+            - build
