@@ -57,3 +57,21 @@ jobs:
               git push
               git push --tags
             fi
+
+workflows:
+  version: 2
+  commit:
+    jobs:
+      - build
+      - publish
+  nightly:
+    triggers:
+      - schedule:
+          cron: "0 0 * * *"
+          filters:
+            branches:
+              only:
+                - master
+    jobs:
+      - build
+      - publish
