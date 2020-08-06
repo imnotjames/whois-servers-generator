@@ -26,7 +26,8 @@ jobs:
           path: artifacts
 
   publish:
-    executor: linux
+    machine:
+      image: ubuntu-1604:201903-01
     steps:
       - attach_workspace:
           at: .
