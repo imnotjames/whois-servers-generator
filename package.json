@@ -1,51 +1,21 @@
 {
+  "private": true,
+  "type": "module",
   "name": "whois-server-list-json",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "babel-node src/cli.js",
-    "build": "babel . --out-dir build --ignore ./node_modules,./build --copy-files"
+    "start": "node src/cli.js"
   },
-  "author": "",
+  "author": "James Ward <james@notjam.es>",
   "license": "MIT",
-  "babel": {
-    "presets": [
-      [
-        "env",
-        {
-          "targets": {
-            "node": "current"
-          }
-        }
-      ],
-      "stage-0"
-    ],
-    "plugins": [
-      "transform-class-properties",
-      [
-        "transform-runtime",
-        {
-          "helpers": false,
-          "polyfill": false
-        }
-      ]
-    ]
-  },
   "dependencies": {
-    "babel-runtime": "^6.26.0",
     "cheerio": "^1.0.0-rc.2",
     "commander": "^2.15.1",
     "markdown-table": "^1.1.2",
     "node-fetch": "^2.1.2",
+    "read-pkg-up": "^7.0.1",
     "whois": "^2.6.0"
-  },
-  "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.3",
-    "babel-plugin-transform-class-properties": "^6.24.1",
-    "babel-plugin-transform-runtime": "^6.23.0",
-    "babel-preset-env": "^1.7.0",
-    "babel-preset-stage-0": "^6.24.1"
   }
 }

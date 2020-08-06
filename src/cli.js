@@ -1,8 +1,10 @@
 import program from 'commander';
 import table from 'markdown-table';
+import readPkgUp from 'read-pkg-up';
 
-import packageJson from '../package.json';
-import { fetchList, fetchRecord } from './fetch';
+import { fetchList, fetchRecord } from './fetch.js';
+
+const packageJson = readPkgUp.sync();
 
 async function formatRecords(records, servers = {}) {
   let output = {
