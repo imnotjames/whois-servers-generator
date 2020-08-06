@@ -47,17 +47,17 @@ export async function fetchList() {
 
   let results = new Map();
 
-  for (let tld of tlds) {
-    let record = await fetchRecord(tld);
+  await Promise.all(
+    tlds.map(async tld => {
+      let record = await fetchRecord(tld);
 
-    if (record.has(tld)) {
-      results.set(tld, record.get(tld));
-    } else {
-      results.set(tld, []);
-    }
-
-
-  }
+      if (record.has(tld)) {
+        results.set(tld, record.get(tld));
+      } else {
+        results.set(tld, []);
+      }
+    })
+  );
 
   return results;
 }
