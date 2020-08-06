@@ -31,18 +31,17 @@ jobs:
     steps:
       - attach_workspace:
           at: .
+      - add_ssh_keys:
+          fingerprints:
+            - "c5:6b:53:a2:74:7e:ab:84:ca:d8:4f:92:69:4b:26:e9"
       - run:
-          name: Set up Git
+          name: Set up Git User
           command: |
-            declare -r SSH_FILE="$(mktemp -u $HOME/.ssh/XXXXX)"
-            echo -ne "$GIT_PRIVATE_KEY" > $SSH_FILE
-            chmod 600 "$SSH_FILE"
-            echo -en "Host alternate-github\n  User git\n  HostName github.com\n  IdentityFile $SSH_FILE" >> $HOME/.ssh/config
             git config --global user.email "ci@circleci.com"
             git config --global user.name "CircleCI"
       - run:
           name: Clone Target Repository
-          command: git clone alternate-github:imnotjames/whois-servers.git ./whois-servers
+          command: git clone git@github.com:imnotjames/whois-servers.git ./whois-servers
       - run:
           name: Place New Servers
           command: |
